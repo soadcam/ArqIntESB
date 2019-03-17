@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1552865375282
+Build-Jdk: 1.8.0_152
+Built-By: soadc
+Bundle-Description: Camel AMQ Example using Spring
+Bundle-ManifestVersion: 2
+Bundle-Name: Camel AMQ Example using Spring [WebServicesSpring]
+Bundle-SymbolicName: WebServicesSpring
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.mycompany.templates.camel.activemq;version="1.0.0";u
+ ses:="org.apache.camel",com.mycompany.templates.camel.services;version=
+ "1.0.0";uses:="org.apache.camel"
+Import-Package: org.apache.activemq,org.apache.activemq.camel.component;
+ version="[5.11,6)",org.apache.camel;version="[2.17,3)",org.apache.camel
+ .spi;version="[2.17,3)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-3.2.0.201605172007

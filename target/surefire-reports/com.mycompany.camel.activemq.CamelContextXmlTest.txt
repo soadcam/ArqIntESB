@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mycompany.camel.activemq.CamelContextXmlTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.037 s - in com.mycompany.camel.activemq.CamelContextXmlTest
