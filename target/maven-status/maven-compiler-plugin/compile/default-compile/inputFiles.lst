@@ -1,6 +1,6 @@
+C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\files\FileProcessor.java
 C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\Client.java
-C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\UpdateClientProcessor.java
-C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\AddClientProcessor.java
 C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\ClientService.java
-C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\GetAllClientsProcessor.java
+C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\ValidateClientProcessor.java
+C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\services\Document.java
 C:\Users\soadc\workspace\WebServicesSpring\src\main\java\com\mycompany\templates\camel\activemq\OrderGenerator.java

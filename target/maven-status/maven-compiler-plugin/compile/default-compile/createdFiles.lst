@@ -1,0 +1,6 @@
+com\mycompany\templates\camel\activemq\OrderGenerator.class
+com\mycompany\templates\camel\services\Document.class
+com\mycompany\templates\camel\services\ValidateClientProcessor.class
+com\mycompany\templates\camel\files\FileProcessor.class
+com\mycompany\templates\camel\services\Client.class
+com\mycompany\templates\camel\services\ClientService.class

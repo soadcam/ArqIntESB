@@ -6,11 +6,8 @@
     <cxf:cxfEndpoint address="http://localhost:9292/cxf/client"
         id="clientEndpoint" serviceClass="com.mycompany.templates.camel.services.ClientService"/>
     <bean
-        class="com.mycompany.templates.camel.services.AddClientProcessor" id="addClientProcessor"/>
-    <bean
-        class="com.mycompany.templates.camel.services.UpdateClientProcessor" id="updateClientProcessor"/>
-    <bean
-        class="com.mycompany.templates.camel.services.GetAllClientsProcessor" id="getAllClientsProcessor"/>
+        class="com.mycompany.templates.camel.services.ValidateClientProcessor" id="validateClientProcessor"/>
+    <bean class="com.mycompany.templates.camel.files.FileProcessor" id="fileProcessor"/>
     <bean class="com.mycompany.templates.camel.activemq.OrderGenerator" id="orderGenerator"/>
     <!-- 
          Lets connect the Camel ActiveMQ component to the broker.
@@ -39,14 +36,6 @@
     <camelContext id="amq-example-context"
         xmlns="http://camel.apache.org/schema/spring" xmlns:order="http://com.mycompany/examples/order">
         <!-- a route to generate a random order every 5th second -->
-        <route id="generate-order">
-            <from id="timerToGenerateOrder" uri="timer:order?period=5000&amp;delay=2000&amp;fixedRate=true"/>
-            <bean id="generatorOrder" method="generateOrder" ref="orderGenerator"/>
-            <setHeader headerName="Exchange.FILE_NAME" id="updateFileNameHeader">
-                <method method="generateFileName" ref="orderGenerator"/>
-            </setHeader>
-            <to id="initializerFolder" uri="file:work/in"/>
-        </route>
         <!--
           When this route is started, it will automatically create the work/jms/input 
           directory where you can drop thefile that need to be processed.
@@ -57,11 +46,6 @@
           Files that are consumed from the work/jms/input directory, are then sent 
           to the JMS queue incomingOrders on the ActiveMQ broker.
         -->
-        <route id="file-to-jms-route">
-            <from id="incomingFolder" uri="file:work/in"/>
-            <log id="logReceivingOrder" message="Receiving order ${file:name}"/>
-            <to id="sendIncomingOrder" uri="activemq:incomingOrders"/>
-        </route>
         <!--
           This route consumes messages from the JMS queue incomingOrders on the 
           ActiveMQ broker within the ESB.
@@ -73,26 +57,6 @@
           ensures that any file that does not meet the requirements for either of 
           the <when/> elements will be moved to the work/jms/output/others directory.
         -->
-        <route id="jms-cbr-route" streamCache="true">
-            <from id="listenToIncomingOrder" uri="activemq:incomingOrders"/>
-            <choice id="countrySelection">
-                <when id="UKCustomer">
-                    <xpath id="_xpath1">/order:order/order:customer/order:country = 'UK'</xpath>
-                    <log id="logUK" message="Sending order ${file:name} to the UK"/>
-                    <to id="outputUKFolder" uri="file:work/out/uk"/>
-                </when>
-                <when id="USCustomer">
-                    <xpath id="_xpath2">/order:order/order:customer/order:country = 'US'</xpath>
-                    <log id="logUS" message="Sending order ${file:name} to the US"/>
-                    <to id="outputUSFolder" uri="file:work/out/us"/>
-                </when>
-                <otherwise id="OtherCustomer">
-                    <log id="logOtherCountry" message="Sending order ${file:name} to another country"/>
-                    <to id="outputOtherCountryFolder" uri="file:work/out/others"/>
-                </otherwise>
-            </choice>
-            <log id="logEndProcessing" message="Done processing ${file:name}"/>
-        </route>
         <route id="_route1">
             <from id="clientEndopointListener" uri="cxf:bean:clientEndpoint"/>
             <recipientList id="_recipientList1">
@@ -100,22 +64,28 @@
             </recipientList>
         </route>
         <route id="_route2">
-            <from id="_from1" uri="direct:addClient"/>
-            <log id="_log1" message="call add client"/>
-            <process id="_process1" ref="addClientProcessor"/>
+            <from id="_from1" uri="direct:validateClient"/>
+            <log id="_log1" message="call validate client"/>
+            <process id="_process1" ref="validateClientProcessor"/>
             <to id="_to1" uri="log:output"/>
         </route>
-        <route id="_route3">
-            <from id="_from2" uri="direct:updateClient"/>
-            <log id="_log2" message="call update client"/>
-            <process id="_process2" ref="updateClientProcessor"/>
-            <to id="_to2" uri="log:output"/>
+        <route id="IncomingFiles">
+            <from id="_from4" uri="file:E:\DirectoriesToProcess\ebs\toProcess"/>
+            <log id="_log4" message="Received file ${file:name}"/>
+            <to id="_to4" uri="activemq:transferFoler"/>
         </route>
-        <route id="_route4">
-            <from id="_from3" uri="direct:getAllClients"/>
-            <log id="_log3" message="call get all clients"/>
-            <process id="_process3" ref="getAllClientsProcessor"/>
-            <to id="_to3" uri="log:output"/>
+        <route id="MigrateFiles">
+            <from id="_from5" uri="activemq:transferFoler"/>
+            <log id="_log2" message="Received to process ${file:name}"/>
+            <to id="_to5" uri="file:E:\DirectoriesToProcess\ebs\processed"/>
+            <log id="_log6" message="Store to process ${file:name}"/>
+        </route>
+        <route id="StoreFiles">
+            <from id="_from2" uri="file:E:\DirectoriesToProcess\ebs\processed?noop=true"/>
+            <log id="_log3" message="File to store in db ${file:name}"/>
+            <process id="_process2" ref="fileProcessor"/>
+            <log id="_log5" message="File stored in db"/>
+            <to id="_to12" uri="log:output"/>
         </route>
     </camelContext>
 </beans>

@@ -1,18 +1,20 @@
 package com.mycompany.templates.camel.services;
 
-public class Client {
-	int id;
-	String firstName;
-	String lastName;
-	int Age;
-	String country;
-	String city;
+public class Client implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String idNumber;
+	private String firstName;
+	private String lastName;
+	private String email;
 	
-	public int getId() {
-		return id;
+	public String getIdNumber() {
+		return idNumber;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -26,24 +28,11 @@ public class Client {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public int getAge() {
-		return Age;
+	public String getEmail() {
+		return email;
 	}
-	public void setAge(int age) {
-		Age = age;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
+	public void setEmail(String email) {
+		this.email = email;
+	}		
 	
 }
